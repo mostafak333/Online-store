@@ -38,15 +38,6 @@ const create = async (req: express.Request, res: express.Response) => {
     password: req.body.pass as string
   };
   try {
-    const authorizationHeader = req.headers.authorization;
-    const token = authorizationHeader?.split(' ')[1];
-    jwt.verify(token as string, process.env.TOKEN_SECRET as string);
-  } catch (err) {
-    res.status(401);
-    res.json('Access denied, invalid token');
-    return;
-  }
-  try {
     const result = await userClass.create(user);
     var token = jwt.sign({ User: result }, process.env.TOKEN_SECRET as string);
     res.json(token);
