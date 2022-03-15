@@ -1,9 +1,7 @@
 import database from '../../database';
 import { OrderClass } from '../order';
-import { UserClass } from '../user';
 import { ProductClass } from '../product';
 const prodcutClass = new ProductClass();
-const userClass = new UserClass();
 const orderClass = new OrderClass();
 describe('Order Model', () => {
   it('Should have an Index method', () => {
@@ -24,6 +22,17 @@ describe('Order Model', () => {
 });
 
 describe('Order Model Functions', () => {
+  beforeAll(async () => {
+    await orderClass.create({
+      status: 'active',
+      user_id: '2'
+    });
+    await prodcutClass.create({
+      name: 'ptest',
+      price: '200',
+      category: 'men'
+    });
+  });
   afterAll(async () => {
     const conn = await database.connect();
     const sqlOP = 'DELETE FROM order_products;';
@@ -38,20 +47,20 @@ describe('Order Model Functions', () => {
 
   it('Create Method -> Add Order', async () => {
     const result = await orderClass.create({
-      status: 'active',
+      status: 'complete',
       user_id: '1'
     });
     expect(result).toEqual({
-      id: 1 as unknown as string,
-      status: 'active',
+      id: 2 as unknown as string,
+      status: 'complete',
       user_id: '1'
     });
   });
   it('Index Method -> Retrive All Orders ', async () => {
     const result = await orderClass.index();
-    expect(result[0]).toEqual({
-      id: 1 as unknown as string,
-      status: 'active',
+    expect(result[1]).toEqual({
+      id: 2 as unknown as string,
+      status: 'complete',
       user_id: '1'
     });
   });
@@ -60,8 +69,21 @@ describe('Order Model Functions', () => {
     expect(result[0]).toEqual({
       id: 1 as unknown as string,
       status: 'active',
-      user_id: '1'
+      user_id: '2'
     });
+  });
+  it('add products Method -> D ', async () => {
+    const result = await orderClass.addProduct('200', '1', '1');
+    expect(result).toEqual({
+      id: 1 as unknown as string,
+      quantity: 200 as unknown as string,
+      order_id: '1',
+      product_id: '1'
+    });
+  });
+  it('Delete Products from order Method -> Delete Products from order With Spacifec ID ', async () => {
+    const result = await orderClass.deletePoduct('1');
+    expect(result).toEqual('Products deleted from order successfully! 👍');
   });
   it('Delete Method -> Delete Order With Spacifec ID ', async () => {
     const result = await orderClass.delete('1');

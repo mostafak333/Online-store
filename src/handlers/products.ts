@@ -6,13 +6,23 @@ const dashboardClass = new DashboardQuerisClass();
 const productClass = new ProductClass();
 //show all products
 const index = async (_req: Request, res: Response) => {
-  const result = await productClass.index();
-  res.json(result);
+  try {
+    const result = await productClass.index();
+    res.json(result);
+  } catch (error) {
+    res.status(400);
+    res.json(error);
+  }
 };
 //show specific product with id
 const show = async (req: Request, res: Response) => {
-  const result = await productClass.show(req.params.id);
-  res.json(result);
+  try {
+    const result = await productClass.show(req.params.id);
+    res.json(result);
+  } catch (error) {
+    res.status(400);
+    res.json(error);
+  }
 };
 //create new product [token required]
 const create = async (req: Request, res: Response) => {
@@ -82,8 +92,15 @@ const update = async (req: Request, res: Response) => {
   }
 };
 const productsbyCategory = async (req: Request, res: Response) => {
-  const result = await dashboardClass.getProdctsByCategory(req.params.category);
-  res.json(result);
+  try {
+    const result = await dashboardClass.getProdctsByCategory(
+      req.params.category
+    );
+    res.json(result);
+  } catch (error) {
+    res.status(400);
+    res.json(error);
+  }
 };
 // product routes
 const productRoutes = (app: Application) => {

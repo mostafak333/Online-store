@@ -13,8 +13,13 @@ const index = async (req: express.Request, res: express.Response) => {
     res.json('Access denied, invalid token');
     return;
   }
-  const result = await userClass.index();
-  res.json(result);
+  try {
+    const result = await userClass.index();
+    res.json(result);
+  } catch (error) {
+    res.status(400);
+    res.json(error);
+  }
 };
 // show specific user with id  [token required]
 const show = async (req: express.Request, res: express.Response) => {
@@ -27,8 +32,13 @@ const show = async (req: express.Request, res: express.Response) => {
     res.json('Access denied, invalid token');
     return;
   }
-  const result = await userClass.show(req.params.id);
-  res.json(result);
+  try {
+    const result = await userClass.show(req.params.id);
+    res.json(result);
+  } catch (error) {
+    res.status(400);
+    res.json(error);
+  }
 };
 // create new user [token required]
 const create = async (req: express.Request, res: express.Response) => {

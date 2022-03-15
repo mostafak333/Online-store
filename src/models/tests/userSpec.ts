@@ -25,6 +25,17 @@ describe('User Model', () => {
 });
 
 describe('User Model Functions', () => {
+  beforeAll(async () => {
+    const hash = bcrypt.hashSync(
+      '123' + pepper,
+      parseInt(saltRounds as string)
+    );
+    const newUser = await userClass.create({
+      firstName: 'ftest',
+      lastName: 'ltest',
+      password: hash
+    });
+  });
   afterAll(async () => {
     const conn = await database.connect();
     const sql = 'DELETE FROM users;';
@@ -40,20 +51,20 @@ describe('User Model Functions', () => {
       parseInt(saltRounds as string)
     );
     const newUser = await userClass.create({
-      firstName: 'ftest',
-      lastName: 'ltest',
+      firstName: 'mustafa',
+      lastName: 'kamal',
       password: hash
     });
-    expect(newUser.id).toEqual(1 as unknown as string);
-    expect(newUser.firstName).toEqual('ftest');
-    expect(newUser.lastName).toEqual('ltest');
+    expect(newUser.id).toEqual(2 as unknown as string);
+    expect(newUser.firstName).toEqual('mustafa');
+    expect(newUser.lastName).toEqual('kamal');
     expect(bcrypt.compare('123', newUser.password)).toBeTruthy();
   });
   it('Index Method -> Retrive All Users ', async () => {
     const newUser = await userClass.index();
-    expect(newUser[0].id).toEqual(1 as unknown as string);
-    expect(newUser[0].firstName).toEqual('ftest');
-    expect(newUser[0].lastName).toEqual('ltest');
+    expect(newUser[1].id).toEqual(2 as unknown as string);
+    expect(newUser[1].firstName).toEqual('mustafa');
+    expect(newUser[1].lastName).toEqual('kamal');
     expect(bcrypt.compare('123', newUser[0].password)).toBeTruthy();
   });
   it('Show Method -> Retrive a User With Spacifec ID', async () => {
@@ -64,7 +75,7 @@ describe('User Model Functions', () => {
     expect(bcrypt.compare('123', newUser[0].password)).toBeTruthy();
   });
   it('Delete Method -> Delete User With Spacifec ID ', async () => {
-    const result = await userClass.delete('1');
+    const result = await userClass.delete('2');
     expect(result).toEqual('user deleted successfully! 👍');
   });
   it('Update Method -> Update User With Spacifec ID', async () => {

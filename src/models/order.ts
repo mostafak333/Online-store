@@ -53,9 +53,9 @@ export class OrderClass {
     quantity: string,
     orderId: string,
     productId: string
-  ): Promise<OrderProduct[]> {
+  ): Promise<OrderProduct> {
     // get orders that is active
-    /* try {
+    try {
       const ordersql = 'SELECT * FROM orders WHERE id=($1)';
       const conn = await database.connect();
       const result = await conn.query(ordersql, [orderId]);
@@ -67,18 +67,31 @@ export class OrderClass {
       }
       conn.release();
     } catch (error) {
-      throw new Error(`${error}`);
-    }*/
+      throw new Error(`">>>>>"${error}`);
+    }
     try {
       const conn = await database.connect();
       const sql =
         'INSERT INTO order_products (quantity ,order_id ,product_id) VALUES ($1,$2,$3) RETURNING *';
       const result = await conn.query(sql, [quantity, orderId, productId]);
       conn.release();
-      return result.rows;
+      return result.rows[0];
     } catch (error) {
       throw new Error(
         `Could not add product with id = ${productId} to order with id = ${orderId}, ${error}`
+      );
+    }
+  }
+  async deletePoduct(id: string): Promise<string> {
+    try {
+      const conn = await database.connect();
+      const sql = 'DELETE FROM order_products WHERE id =($1)';
+      const result = await conn.query(sql, [id]);
+      conn.release();
+      return 'Products deleted from order successfully! 👍';
+    } catch (error) {
+      throw new Error(
+        `Could not delete products with ${id} from order_products . Error: ${error}`
       );
     }
   }

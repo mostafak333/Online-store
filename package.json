@@ -7,7 +7,7 @@
     "prettier": "prettier --config .prettierrc --write ./src",
     "build": "npx tsc",
     "jasmine": "jasmine",
-    "test":  " npx tsc && db-migrate --env test up &&npx tsc && jasmine && db-migrate reset",
+    "test": "npx tsc && db-migrate --env test up &&npx tsc && jasmine && db-migrate reset",
     "start": "nodemon src/server.ts "
   },
   "keywords": [],
@@ -32,11 +32,13 @@
     "@types/jasmine": "^3.10.3",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/pg": "^8.6.4",
+    "@types/supertest": "^2.0.11",
     "jasmine": "^4.0.2",
     "jasmine-spec-reporter": "^7.0.0",
     "jasmine-ts": "^0.4.0",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
+    "supertest": "^6.2.2",
     "ts-node": "^8.10.2",
     "tsc-watch": "^4.6.0"
   }

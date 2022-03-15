@@ -3,14 +3,42 @@ import { Order, OrderClass } from '../models/order';
 import jwt from 'jsonwebtoken';
 const orderClass = new OrderClass();
 //get all orders
-const index = async (_req: express.Request, res: express.Response) => {
-  const order = await orderClass.index();
-  res.json(order);
+const index = async (req: express.Request, res: express.Response) => {
+  try {
+    const authorizationHeader = req.headers.authorization;
+    const token = authorizationHeader?.split(' ')[1];
+    jwt.verify(token as string, process.env.TOKEN_SECRET as string);
+  } catch (err) {
+    res.status(401);
+    res.json('Access denied, invalid token');
+    return;
+  }
+  try {
+    const order = await orderClass.index();
+    res.json(order);
+  } catch (error) {
+    res.status(400);
+    res.json(error);
+  }
 };
 // get a specific order with id
 const show = async (req: express.Request, res: express.Response) => {
-  const order = await orderClass.show(req.params.id);
-  res.json(order);
+  try {
+    const authorizationHeader = req.headers.authorization;
+    const token = authorizationHeader?.split(' ')[1];
+    jwt.verify(token as string, process.env.TOKEN_SECRET as string);
+  } catch (err) {
+    res.status(401);
+    res.json('Access denied, invalid token');
+    return;
+  }
+  try {
+    const order = await orderClass.show(req.params.id);
+    res.json(order);
+  } catch (error) {
+    res.status(400);
+    res.json(error);
+  }
 };
 // create new order
 const create = async (req: express.Request, res: express.Response) => {

@@ -35,7 +35,7 @@ describe('Product Model Functions', () => {
       category: 'men'
     });
     expect(result).toEqual({
-      id: 1 as unknown as string,
+      id: 2 as unknown as string,
       name: 'ptest',
       price: 200 as unknown as string,
       category: 'men'

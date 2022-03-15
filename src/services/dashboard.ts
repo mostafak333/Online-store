@@ -4,7 +4,7 @@ import { Product } from '../models/product';
 
 export class DashboardQuerisClass {
   // Get five Most popular products
-  async top5Popular(): Promise<{ name: string; price: number }[]> {
+  async top5Popular(): Promise<{ id:string, name: string; price: number,sum_quntity:string,product_id:string }[]> {
     try {
       const conn = await database.connect();
       const sql = `SELECT name, price,sum(quantity),product_id FROM products INNER JOIN order_products ON products.id = order_products.product_id group by product_id, name,price order by sum(quantity) desc LIMIT 5`;

@@ -16,8 +16,13 @@ const completedOrdersByUser = async (
     res.json('Access denied, invalid token');
     return;
   }
-  const order = await dashboardClass.completedOrders(req.params.id);
-  res.json(order);
+  try {
+    const order = await dashboardClass.completedOrders(req.params.id);
+    res.json(order);
+  } catch (error) {
+    res.status(400);
+    res.json(error);
+  }
 };
 //get all orders (active or compeleted) made with a specific user using user id
 const orderByUser = async (req: express.Request, res: express.Response) => {
@@ -30,18 +35,33 @@ const orderByUser = async (req: express.Request, res: express.Response) => {
     res.json('Access denied, invalid token');
     return;
   }
-  const order = await dashboardClass.orderByUser(req.params.user_id);
-  res.json(order);
+  try {
+    const order = await dashboardClass.orderByUser(req.params.user_id);
+    res.json(order);
+  } catch (error) {
+    res.status(400);
+    res.json(error);
+  }
 };
 // get top 5 selling products which have the biggest sum of quantity
 const most5Popular = async (req: express.Request, res: express.Response) => {
-  const order = await dashboardClass.top5Popular();
-  res.json(order);
+  try {
+    const order = await dashboardClass.top5Popular();
+    res.json(order);
+  } catch (error) {
+    res.status(400);
+    res.json(error);
+  }
 };
 // get top 5 selling products which have the biggest sum of quantity multiplied with product pricey
 const most5Selling = async (req: express.Request, res: express.Response) => {
-  const order = await dashboardClass.top5Seling();
-  res.json(order);
+  try {
+    const order = await dashboardClass.top5Seling();
+    res.json(order);
+  } catch (error) {
+    res.status(400);
+    res.json(error);
+  }
 };
 
 const dashboard_Routes = (app: express.Application) => {

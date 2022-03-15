@@ -10,7 +10,7 @@
 
   - http://localhost:3000/products/create
   - {
-    name: req.body.name as string,
+    "name": "p1",
     "price": 20,
     "category": "men"
     } data like this be must sent in the body of reqest
