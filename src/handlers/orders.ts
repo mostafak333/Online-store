@@ -72,8 +72,36 @@ const addProductToOrder = async (
   const order_id = req.params.id as string;
   const product_id = req.body.product_id as string;
   try {
+    const authorizationHeader = req.headers.authorization;
+    const token = authorizationHeader?.split(' ')[1];
+    jwt.verify(token as string, process.env.TOKEN_SECRET as string);
+  } catch (err) {
+    res.status(401);
+    res.json('Access denied, invalid token');
+    return;
+  }
+  try {
     const result = await orderClass.addProduct(quantity, order_id, product_id);
     res.json(result);
+  } catch (error) {
+    res.status(400);
+    res.json(error);
+  }
+};
+// delete product from order with id = number
+const deleteProductFromOrder = async (req: express.Request, res: express.Response) => {
+  try {
+    const authenticationHeader = req.headers.authorization;
+    const token = authenticationHeader?.split(' ')[1];
+    jwt.verify(token as string, process.env.TOKEN_SECRET as string);
+  } catch (error) {
+    res.status(401);
+    res.json('Access denied, invalid token');
+    return;
+  }
+  try {
+    const order = await orderClass.deletePoduct(req.params.id);
+    res.json(order);
   } catch (error) {
     res.status(400);
     res.json(error);
@@ -105,5 +133,6 @@ const orders_Routes = (app: express.Application) => {
   app.post('/orders/create', create); //ex: http://localhost:3000/orders/create and send {"status":"active","user_id":1 } in body of req
   app.delete('/orders/delete/:id', destroy); //ex: http://localhost:3000/orders/delete/1
   app.post('/orders/:id/products', addProductToOrder); //ex: http://localhost:3000/orders/1/products and send {"quantity": 5, "product_id":2} in body of req
+  app.delete('/delete/orders/:id/products', deleteProductFromOrder); //ex: http://localhost:3000/delete/orders/:id/products 
 };
 export default orders_Routes;

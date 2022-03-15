@@ -19,20 +19,12 @@ describe('Order Model', () => {
   it('Should have an Update method', () => {
     expect(orderClass.addProduct).toBeDefined();
   });
+  it('Should have an DeleteProduct method', () => {
+    expect(orderClass.deletePoduct).toBeDefined();
+  });
 });
 
 describe('Order Model Functions', () => {
-  beforeAll(async () => {
-    await orderClass.create({
-      status: 'active',
-      user_id: '2'
-    });
-    await prodcutClass.create({
-      name: 'ptest',
-      price: '200',
-      category: 'men'
-    });
-  });
   afterAll(async () => {
     const conn = await database.connect();
     const sqlOP = 'DELETE FROM order_products;';
@@ -47,37 +39,37 @@ describe('Order Model Functions', () => {
 
   it('Create Method -> Add Order', async () => {
     const result = await orderClass.create({
-      status: 'complete',
-      user_id: '1'
+      status: 'active',
+      user_id: '2'
     });
     expect(result).toEqual({
-      id: 2 as unknown as string,
-      status: 'complete',
-      user_id: '1'
+      id: 3 as unknown as string,
+      status: 'active',
+      user_id: '2'
     });
   });
   it('Index Method -> Retrive All Orders ', async () => {
     const result = await orderClass.index();
     expect(result[1]).toEqual({
       id: 2 as unknown as string,
-      status: 'complete',
-      user_id: '1'
+      status: 'active',
+      user_id: '2'
     });
   });
   it('Show Method -> Retrive Order With Spacifec ID', async () => {
-    const result = await orderClass.show('1');
-    expect(result[0]).toEqual({
-      id: 1 as unknown as string,
+    const result = await orderClass.show('2');
+    expect(result).toEqual({
+      id: 2 as unknown as string,
       status: 'active',
       user_id: '2'
     });
   });
   it('add products Method -> D ', async () => {
-    const result = await orderClass.addProduct('200', '1', '1');
+    const result = await orderClass.addProduct('200', '2', '1');
     expect(result).toEqual({
-      id: 1 as unknown as string,
+      id: 2 as unknown as string,
       quantity: 200 as unknown as string,
-      order_id: '1',
+      order_id: '2',
       product_id: '1'
     });
   });

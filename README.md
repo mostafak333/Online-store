@@ -31,6 +31,7 @@ For development, you will only need Node.js and a node global package, installed
 
 # DataBase
 
+## Database running on Default port 5432.
 ## to connect to db create db called online_store and run migrations up files
 #### create database using SQL query 
 - CREATE DATABASE  online_store;  this for dev 
@@ -66,7 +67,6 @@ For development, you will only need Node.js and a node global package, installed
     -product_id REFERENCES products(id)
 
 # server running on localhost on port 3000.
-# Database running on Default port 5432.
 
 # Environment variables
 

@@ -25,17 +25,6 @@ describe('User Model', () => {
 });
 
 describe('User Model Functions', () => {
-  beforeAll(async () => {
-    const hash = bcrypt.hashSync(
-      '123' + pepper,
-      parseInt(saltRounds as string)
-    );
-    const newUser = await userClass.create({
-      firstName: 'ftest',
-      lastName: 'ltest',
-      password: hash
-    });
-  });
   afterAll(async () => {
     const conn = await database.connect();
     const sql = 'DELETE FROM users;';

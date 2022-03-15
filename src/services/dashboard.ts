@@ -4,10 +4,28 @@ import { Product } from '../models/product';
 
 export class DashboardQuerisClass {
   // Get five Most popular products
-  async top5Popular(): Promise<{ id:string, name: string; price: number,sum_quntity:string,product_id:string }[]> {
+  async top5Popular(): Promise<
+    { name: string; price: string; sum: string; product_id: string }[]
+  > {
     try {
       const conn = await database.connect();
       const sql = `SELECT name, price,sum(quantity),product_id FROM products INNER JOIN order_products ON products.id = order_products.product_id group by product_id, name,price order by sum(quantity) desc LIMIT 5`;
+
+      const result = await conn.query(sql);
+
+      conn.release();
+
+      return result.rows;
+    } catch (err) {
+      throw new Error(`unable get products  ${err}`);
+    }
+  }
+  async top5Seling(): Promise<
+    { name: string; price: string; sum: string; product_id: string }[]
+  > {
+    try {
+      const conn = await database.connect();
+      const sql = `SELECT name, price,sum(quantity*price),product_id FROM products INNER JOIN order_products ON products.id = order_products.product_id group by product_id, name,price order by sum(quantity*price) desc LIMIT 5`;
 
       const result = await conn.query(sql);
 
@@ -42,20 +60,6 @@ export class DashboardQuerisClass {
       throw new Error(
         `Could not get order with user id=${user_id}. Error: ${error}`
       );
-    }
-  }
-  async top5Seling(): Promise<{ name: string; price: number }[]> {
-    try {
-      const conn = await database.connect();
-      const sql = `SELECT name, price,sum(quantity*price),product_id FROM products INNER JOIN order_products ON products.id = order_products.product_id group by product_id, name,price order by sum(quantity*price) desc LIMIT 5`;
-
-      const result = await conn.query(sql);
-
-      conn.release();
-
-      return result.rows;
-    } catch (err) {
-      throw new Error(`unable get products  ${err}`);
     }
   }
   async getProdctsByCategory(category: string): Promise<Product[]> {
