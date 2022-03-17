@@ -14,7 +14,7 @@ describe('Test responses from endpoints', (): void => {
 
   describe('SuperTest endpoints', (): void => {
     let token: string;
-    beforeEach(async () => {
+    beforeAll(async () => {
       const response: supertest.Response = await request
         .post('/users/create')
         .send({
@@ -23,8 +23,14 @@ describe('Test responses from endpoints', (): void => {
           pass: 147258
         });
       token = response.body as unknown as string;
+      const res: supertest.Response = await request
+      .post('/orders/create')
+      .send({ status: 'active', user_id: 2 })
+      .set('Authorization', 'Bearer ' + token);
+    
+
     });
-    afterEach(async ()=>{
+    afterAll(async ()=>{
         const conn = await database.connect();
     const sqlpro = 'DELETE FROM products;';
     await conn.query(sqlpro);
@@ -46,6 +52,15 @@ describe('Test responses from endpoints', (): void => {
     })
     // test User endpoints with supertest
     describe('User endpoints', (): void => {
+      it('Post /users/create (<< create user >>)', async (): Promise<void> => {
+        const response: supertest.Response = await request.post('/users/create').send({
+            fname: "ali",
+            lname: "ahmed",
+            pass: 147258
+        })
+          token = response.body as unknown as string
+          expect(response.status).toBe(200);
+        });
       it('GET /users (<< get users >>)', async (): Promise<void> => {
         const response: supertest.Response = await request
           .get('/users')
@@ -121,7 +136,7 @@ describe('Test responses from endpoints', (): void => {
       it('POST /orders/create (<< create order >>)', async (): Promise<void> => {
         const response: supertest.Response = await request
           .post('/orders/create')
-          .send({ status: 'active', user_id: 1 })
+          .send({ status: 'active', user_id: 2 })
           .set('Authorization', 'Bearer ' + token);
         expect(response.status).toBe(200);
       });

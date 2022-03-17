@@ -7,7 +7,7 @@
     "prettier": "prettier --config .prettierrc --write ./src",
     "build": "npx tsc",
     "jasmine": "jasmine",
-    "test": "npx tsc && db-migrate --env test up &&npx tsc && jasmine && db-migrate reset",
+    "test": " set ENV=test&&npx tsc && db-migrate --env test up &&npx tsc && jasmine && db-migrate --env test down",
     "start": "nodemon src/server.ts "
   },
   "keywords": [],

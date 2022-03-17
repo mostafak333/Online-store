@@ -1,7 +1,7 @@
 import { DashboardQuerisClass } from '../../services/dashboard';
 import { OrderClass } from '../order';
 import { ProductClass } from '../product';
-import bcrypt, { hash } from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { UserClass } from '../user';
 
 const dashboardClass = new DashboardQuerisClass();
@@ -39,6 +39,11 @@ describe('DashBoard Model Functions', () => {
     await userClass.create({
       firstName: 'ftest',
       lastName: 'ltest',
+      password: hash
+    });
+    await userClass.create({
+      firstName: 'ftest2',
+      lastName: 'ltest2',
       password: hash
     });
     await prodcutClass.create({
