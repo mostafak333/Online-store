@@ -114,6 +114,8 @@
 
 - [ADDITIONAL] Top 5 most selling products use HTTP GET
   - http://localhost:3000/top5selling
+  
+- [ADDITIONAL] Get Prodcts By Category use HTTP GET
 
 ## Data Shapes
 

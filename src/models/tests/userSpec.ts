@@ -44,23 +44,23 @@ describe('User Model Functions', () => {
       lastName: 'kamal',
       password: hash
     });
-    expect(newUser.id).toEqual(2 as unknown as string);
+    expect(newUser.id).toEqual(1 as unknown as string);
     expect(newUser.firstName).toEqual('mustafa');
     expect(newUser.lastName).toEqual('kamal');
     expect(bcrypt.compare('123', newUser.password)).toBeTruthy();
   });
   it('Index Method -> Retrive All Users ', async () => {
     const newUser = await userClass.index();
-    expect(newUser[1].id).toEqual(2 as unknown as string);
-    expect(newUser[1].firstName).toEqual('mustafa');
-    expect(newUser[1].lastName).toEqual('kamal');
+    expect(newUser[0].id).toEqual(1 as unknown as string);
+    expect(newUser[0].firstName).toEqual('mustafa');
+    expect(newUser[0].lastName).toEqual('kamal');
     expect(bcrypt.compare('123', newUser[0].password)).toBeTruthy();
   });
   it('Show Method -> Retrive a User With Spacifec ID', async () => {
     const newUser = await userClass.show('1');
     expect(newUser[0].id).toEqual(1 as unknown as string);
-    expect(newUser[0].firstName).toEqual('ftest');
-    expect(newUser[0].lastName).toEqual('ltest');
+    expect(newUser[0].firstName).toEqual('mustafa');
+    expect(newUser[0].lastName).toEqual('kamal');
     expect(bcrypt.compare('123', newUser[0].password)).toBeTruthy();
   });
   it('Delete Method -> Delete User With Spacifec ID ', async () => {

@@ -2,7 +2,7 @@ import { DashboardQuerisClass } from '../services/dashboard';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 const dashboardClass = new DashboardQuerisClass();
-// get all compeleted orders made with a specific user using user id
+// get all compeleted orders made with a specific user using user id [token equired]
 const completedOrdersByUser = async (
   req: express.Request,
   res: express.Response
@@ -24,7 +24,7 @@ const completedOrdersByUser = async (
     res.json(error);
   }
 };
-//get all orders (active or compeleted) made with a specific user using user id
+//get all orders (active or compeleted) made with a specific user using user id [token equired]
 const orderByUser = async (req: express.Request, res: express.Response) => {
   try {
     const authorizationHeader = req.headers.authorization;
@@ -43,7 +43,7 @@ const orderByUser = async (req: express.Request, res: express.Response) => {
     res.json(error);
   }
 };
-// get top 5 selling products which have the biggest sum of quantity
+// get top 5 popular products which have the biggest sum of quantity
 const most5Popular = async (req: express.Request, res: express.Response) => {
   try {
     const order = await dashboardClass.top5Popular();

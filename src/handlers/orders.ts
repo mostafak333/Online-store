@@ -2,7 +2,7 @@ import express from 'express';
 import { Order, OrderClass } from '../models/order';
 import jwt from 'jsonwebtoken';
 const orderClass = new OrderClass();
-//get all orders
+//get all orders [token required]
 const index = async (req: express.Request, res: express.Response) => {
   try {
     const authorizationHeader = req.headers.authorization;
@@ -21,7 +21,7 @@ const index = async (req: express.Request, res: express.Response) => {
     res.json(error);
   }
 };
-// get a specific order with id
+// get a specific order with id [token required]
 const show = async (req: express.Request, res: express.Response) => {
   try {
     const authorizationHeader = req.headers.authorization;
@@ -40,7 +40,7 @@ const show = async (req: express.Request, res: express.Response) => {
     res.json(error);
   }
 };
-// create new order
+// create new order [token required]
 const create = async (req: express.Request, res: express.Response) => {
   const order: Order = {
     status: req.body.status as string,
@@ -63,7 +63,7 @@ const create = async (req: express.Request, res: express.Response) => {
     res.json(error);
   }
 };
-// add product to order
+// add product to order [token required]
 const addProductToOrder = async (
   req: express.Request,
   res: express.Response
@@ -88,8 +88,11 @@ const addProductToOrder = async (
     res.json(error);
   }
 };
-// delete product from order with id = number
-const deleteProductFromOrder = async (req: express.Request, res: express.Response) => {
+// delete product from order with id = number [token required]
+const deleteProductFromOrder = async (
+  req: express.Request,
+  res: express.Response
+) => {
   try {
     const authenticationHeader = req.headers.authorization;
     const token = authenticationHeader?.split(' ')[1];
@@ -107,7 +110,7 @@ const deleteProductFromOrder = async (req: express.Request, res: express.Respons
     res.json(error);
   }
 };
-//delete a specific order with id
+//delete a specific order with id [token required]
 const destroy = async (req: express.Request, res: express.Response) => {
   try {
     const authenticationHeader = req.headers.authorization;
@@ -133,6 +136,6 @@ const orders_Routes = (app: express.Application) => {
   app.post('/orders/create', create); //ex: http://localhost:3000/orders/create and send {"status":"active","user_id":1 } in body of req
   app.delete('/orders/delete/:id', destroy); //ex: http://localhost:3000/orders/delete/1
   app.post('/orders/:id/products', addProductToOrder); //ex: http://localhost:3000/orders/1/products and send {"quantity": 5, "product_id":2} in body of req
-  app.delete('/delete/orders/:id/products', deleteProductFromOrder); //ex: http://localhost:3000/delete/orders/:id/products 
+  app.delete('/delete/orders/:id/products', deleteProductFromOrder); //ex: http://localhost:3000/delete/orders/:id/products
 };
 export default orders_Routes;

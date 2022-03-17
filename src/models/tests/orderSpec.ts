@@ -35,6 +35,7 @@ describe('Order Model Functions', () => {
     await conn.query(sql);
     const sql2 = 'ALTER SEQUENCE orders_id_seq RESTART WITH 1;';
     await conn.query(sql2);
+    conn.release();
   });
 
   it('Create Method -> Add Order', async () => {
